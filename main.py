@@ -1,15 +1,16 @@
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from utils import get_double, get_deviations
 
 # Parámetros de simulación
 time_step = 1  # Paso de tiempo en minutos
-total_time = 2880  # Tiempo total de simulación (48 horas)
+total_time = 10080 # Tiempo total de simulación (168 horas - 7 días)
 
 # Parámetros del agua
-set_point = get_double("Ingrese la temperatura deseada del agua (°C): ", 20, 35)
+set_point = get_double("Ingrese la temperatura deseada del agua (°C): ", 20, 40)
 initial_temperature = get_double("Ingrese la temperatura inicial del agua (°C): ", 10, 30)
+
+deviations = get_deviations()
 
 # Dinámica del climatizador
 max_heating_rate = 0.5  # Grados Celsius por minuto
@@ -31,12 +32,20 @@ heater_power = [0]  # Potencia de calentamiento/enfriamiento normalizada
 
 # Simulación
 for t in range(1, total_time + 1):
+
+    #Aplico los desvios
+    if deviations and t >= deviations[0][0]:
+        deviation = deviations.pop(0)
+        temperature = temperature + deviation[1]
+
+
     error = set_point - temperature
+    proportional = error #if error > .5 else 0
     integral += error * time_step
     derivative = (error - previous_error) / time_step
 
     # Salida PID
-    control_signal = Kp * error + Ki * integral + Kd * derivative
+    control_signal = Kp * proportional + Ki * integral + Kd * derivative
 
     # Limitar la señal de control según las capacidades del climatizador
     control_signal = max(min(control_signal, max_heating_rate), max_cooling_rate)
@@ -60,6 +69,13 @@ data = pd.DataFrame({
     'Potencia del climatizador': heater_power
 })
 
+# Resumen
+print("Temperatura final del agua: {:.2f} °C".format(temperatures[-1]))
+print("Tiempo total de simulación: {} minutos".format(total_time))
+print("Temperatura deseada: {} °C".format(set_point))
+print("\nResumen de los datos:")
+print(data.describe())
+
 # Gráficos
 plt.figure(figsize=(10, 6))
 
@@ -82,10 +98,3 @@ plt.legend()
 plt.grid(True)
 
 plt.show()
-
-# Resumen
-print("Temperatura final del agua: {:.2f} °C".format(temperatures[-1]))
-print("Tiempo total de simulación: {} minutos".format(total_time))
-print("Temperatura deseada: {} °C".format(set_point))
-print("\nResumen de los datos:")
-print(data.describe())

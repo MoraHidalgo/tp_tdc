@@ -17,11 +17,18 @@ def get_deviations():
     print("Escriba 'done' para finalizar o 'default' para usar un conjunto predefinido.\n")
     
     while True:
-        time = input(f"Ingrese el tiempo de la desviación {len(deviations) + 1} (o 'done'/'default'): ").strip().lower()
+        time = input(f"Ingrese el tiempo de la desviación {len(deviations) + 1} (o 'done'/'otonio'): ").strip().lower()
         if time == 'done':
             break
-        elif time == 'default':
-            deviations = [(100, 0.1), (200, -0.1)]
+        elif time == 'otonio': #Promedio de 10°C a las 00
+            clima = [(60, 0), (120, 0), (180, 0), (240, 0), (300, 0), #10°C - 5h
+                          (360, 0), (420, 0.0), (480, 1), (540, 1), (600, 2),#14°C - 10h
+                          (660, 2), (720, 2), (780, 2), (840, 0), (900, 0),#20°C - 15h
+                          (960, 0), (1020, 0), (1080, 0), (1140, -1), (1200, -1), #18°C - 20h
+                          (1260, -2), (1320, -2), (1380, -2), (1440, -2)] #10°C - 0h
+            
+            for i in range(1,8): #Para que sea una semana
+                deviations += [(item[0]*i, item[1]*0.01) for item in clima]
             print(f"Se usará el conjunto predefinido: {deviations}")
             break
         
