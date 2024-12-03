@@ -9,11 +9,9 @@ def get_double(prompt, min, max):
             print("Entrada inválida. Por favor, ingrese un número.")
 
 # Función para obtener una lista de tuplas de desviaciones del usuario
-def get_deviations():
+def get_deviations(dias):
     deviations = []
-    print("\nIngrese las desviaciones de temperatura. Cada desviación consta de:")
-    print("  - Tiempo (en minutos)")
-    print("  - Variación de temperatura (en °C)")
+    print("\nIngrese las desviaciones de temperatura.")
     print("Escriba 'done' para finalizar o 'default' para usar un conjunto predefinido.\n")
     
     while True:
@@ -29,7 +27,6 @@ def get_deviations():
             
             for i in range(1,8): #Para que sea una semana
                 deviations += [(item[0]*i, item[1]*0.01) for item in clima]
-            print(f"Se usará el conjunto predefinido: {deviations}")
             break
         
         try:
