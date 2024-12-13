@@ -130,7 +130,7 @@ ax[0].set_title('Control de Temperatura de Piscina')
 ax[0].legend()
 ax[0].grid(True)
 
-ax[1].set_xlabel('Tiempo (min)')
+ax[1].set_xlabel('Tiempo')
 ax[1].set_ylabel('Potencia (normalizada)')
 ax[1].set_title('Potencia del Climatizador')
 ax[1].legend()

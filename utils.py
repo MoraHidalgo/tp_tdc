@@ -12,7 +12,7 @@ def get_double(prompt, min, max):
 def get_deviations(dias):
     deviations = []
     print("\nIngrese las desviaciones de temperatura.")
-    print("Escriba 'done' para finalizar o 'default' para usar un conjunto predefinido.\n")
+    print("Escriba 'done' para finalizar para usar un conjunto predefinido.\n")
     
     while True:
         time = input(f"Ingrese el tiempo de la desviación {len(deviations) + 1} (o 'done'/'otonio'): ").strip().lower()
@@ -25,7 +25,7 @@ def get_deviations(dias):
                           (960, 0), (1020, 0), (1080, 0), (1140, -1), (1200, -1), #18°C - 20h
                           (1260, -2), (1320, -2), (1380, -2), (1440, -2)] #10°C - 0h
             
-            for i in range(1,8): #Para que sea una semana
+            for i in range(1,31): #Para que sea una semana
                 deviations += [(item[0]*i, item[1]*0.01) for item in clima]
             break
         
